@@ -13,7 +13,7 @@ class PETDetectorSD : public G4VSensitiveDetector
 {
 
 public:
-  PETDetectorSD(G4String name, G4String collname);
+  PETDetectorSD(G4String name, std::vector<G4String>* collnames);
   ~PETDetectorSD();
 
   void Initialize(G4HCofThisEvent* );
@@ -21,7 +21,8 @@ public:
   void EndOfEvent(G4HCofThisEvent* HCE);
 
 private:
-  PETDetectorHitsCollection* HitsCollection;
+  PETDetectorHitsCollection* EdepHitsCollection;
+  PETDetectorHitsCollection* C11HitsCollection;
   G4String SensitiveDetectorName;
 };
 

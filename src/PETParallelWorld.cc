@@ -52,7 +52,13 @@ void PETParallelWorld::ConstructSD()
 {
     G4SDManager::GetSDMpointer()->SetVerboseLevel(1);
 
-    G4VSensitiveDetector* isoDetector = new PETDetectorSD("IsoDetector", "EdepHitsCollection"/*, "C11HitsCollection", "C10HitsCollection", "O15HitsCollection"*/);
+    G4CollectionNameVector* collections = new G4CollectionNameVector;
+    collections->insert("EdepHitsCollection");
+    collections->insert("C11HitsCollection");
+
+    /*"C10HitsCollection", "O15HitsCollection"*/
+
+    G4VSensitiveDetector* isoDetector = new PETDetectorSD("IsoDetector", collections);
     G4SDManager::GetSDMpointer()->AddNewDetector(isoDetector);
     SetSensitiveDetector(GhostZBoxLog, isoDetector);
 }
