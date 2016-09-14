@@ -1,6 +1,7 @@
 #include "PETRun.hh"
 #include "G4SDManager.hh"
 #include "G4THitsMap.hh"
+#include "PETDetectorHit.hh"
 
 PETRun::PETRun(const G4String detectorName, G4bool verbose) : G4Run()
 {
@@ -27,16 +28,19 @@ void PETRun::RecordEvent(const G4Event* aEvent)
     G4HCofThisEvent* HCE = aEvent->GetHCofThisEvent();
     if(HCE!=NULL)
     {
-        G4THitsMap<G4double>* HC = static_cast<G4THitsMap<G4double>*>(HCE -> GetHC(CollectionID));
-        G4int i = 0;
-        G4int j = 0;
+        PETDetectorHitsCollection* HC = (PETDetectorHitsCollection*)(HCE -> GetHC(CollectionID));
         if(HC!=NULL)
         {
-            std::map<G4int, G4double*>::iterator it;
-            for ( it = HC->GetMap()->begin(); it != HC->GetMap()->end(); it++)
+            for (G4int i = 0; i < HC->entries(); i++)
             {
-                i = it->first;
-                Cells[i] += (*(it->second))/CLHEP::gray;
+                PETDetectorHit *hit = (PETDetectorHit*)(HC->GetHit(i));
+                if (Verbose)
+                {
+                    G4cout << "HitsVector Initial: " << "i = "<< i << " Energy deposition is " << hit->GetEdep()
+                           << " Position is" << hit->GetReplicaNum() << G4endl;
+                }
+                G4int num = hit->GetReplicaNum();
+                Cells[num] += hit->GetEdep();
             }
         }
     }

@@ -13,6 +13,7 @@
 #include "G4PSDoseDeposit3D.hh"
 #include "G4PSEnergyDeposit.hh"
 #include "PETLayerParameterization.hh"
+#include "PETDetectorSD.hh"
 
 PETParallelWorld::PETParallelWorld(G4String worldName)
     :G4VUserParallelWorld(worldName)
@@ -50,9 +51,8 @@ void PETParallelWorld::Construct()
 void PETParallelWorld::ConstructSD()
 {
     G4SDManager::GetSDMpointer()->SetVerboseLevel(1);
-    G4MultiFunctionalDetector* detector = new G4MultiFunctionalDetector("Detector");
-    G4VPrimitiveScorer* eneSD = new G4PSEnergyDeposit("EDep");
-    detector->RegisterPrimitive(eneSD);
-    G4cout << "DOSE SCORER " << eneSD->GetUnit() << G4endl;
-    SetSensitiveDetector(GhostZBoxLog, detector);
+
+    G4VSensitiveDetector* isoDetector = new PETDetectorSD("IsoDetector", "EdepHitsCollection"/*, "C11HitsCollection", "C10HitsCollection", "O15HitsCollection"*/);
+    G4SDManager::GetSDMpointer()->AddNewDetector(isoDetector);
+    SetSensitiveDetector(GhostZBoxLog, isoDetector);
 }

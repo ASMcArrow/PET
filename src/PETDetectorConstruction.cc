@@ -41,6 +41,7 @@ G4VPhysicalVolume* PETDetectorConstruction::Construct()
     G4NistManager* nistManager = G4NistManager::Instance();
     G4Material* Water = nistManager->FindOrBuildMaterial("G4_WATER");
     G4Material* Air = nistManager->FindOrBuildMaterial("G4_AIR");
+    G4Material* Bone = nistManager->FindOrBuildMaterial("G4_B-100_BONE");
 
     // World
     G4Box* world = new G4Box("World", 3*m, 3*m, 3*m);
@@ -50,7 +51,7 @@ G4VPhysicalVolume* PETDetectorConstruction::Construct()
 
     // Phantom
     G4Box* phantom = new G4Box("Phantom", 15*cm, 15*cm, 30*cm);
-    G4LogicalVolume *phantomLogic = new G4LogicalVolume(phantom, Water, "PhantomLogic");
+    G4LogicalVolume *phantomLogic = new G4LogicalVolume(phantom, Bone, "PhantomLogic");
     G4VPhysicalVolume *phantomPhys = new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 30*cm), phantomLogic, "PhantomPhys", worldLogic, false, 0);
 
     return worldPhys;
