@@ -43,12 +43,40 @@ void PETRunAction::EndOfRunAction(const G4Run* aRun)
     if(!IsMaster()) return;
 
     PETRun* run = (PETRun*)aRun;
-    Cells = run->GetCells();
+    std::vector<G4double*>* collections = run->GetHCollections();
 
-    std::ofstream PETFile("PET_DoseDistribution.txt");
+    std::ofstream eDepFile("PET_EnergyDistribution.txt");
 
     for (int j = 0; j < 100; j++)
     {
-        PETFile << (1.0 + j*2) << " " << Cells[j]/1000 << "\n";
+        eDepFile << j << " " << (*collections)[0][j] << "\n";
+    }
+
+    std::ofstream C11File("PET_C11Distribution.txt");
+
+    for (int j = 0; j < 100; j++)
+    {
+        C11File << j << " " << (*collections)[1][j] << "\n";
+    }
+
+    std::ofstream C10File("PET_C10Distribution.txt");
+
+    for (int j = 0; j < 100; j++)
+    {
+        C10File << j << " " << (*collections)[2][j] << "\n";
+    }
+
+    std::ofstream O15File("PET_O15Distribution.txt");
+
+    for (int j = 0; j < 100; j++)
+    {
+        O15File << j << " " << (*collections)[3][j] << "\n";
+    }
+
+    std::ofstream PosFile("PET_PositronDistribution.txt");
+
+    for (int j = 0; j < 100; j++)
+    {
+        PosFile << j << " " << (*collections)[4][j] << "\n";
     }
 }

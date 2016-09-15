@@ -18,7 +18,8 @@ public:
 
 private:
     G4String DetectorName;
-    G4double* Cells;
+    G4double* EDep;
+    G4double* C11;
 };
 
 #endif // PETDETECTORSD_HH

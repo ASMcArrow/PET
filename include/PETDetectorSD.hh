@@ -23,6 +23,10 @@ public:
 private:
   PETDetectorHitsCollection* EdepHitsCollection;
   PETDetectorHitsCollection* C11HitsCollection;
+  PETDetectorHitsCollection* C10HitsCollection;
+  PETDetectorHitsCollection* O15HitsCollection;
+  PETDetectorHitsCollection* PositronHitsCollection;
+
   G4String SensitiveDetectorName;
 };
 

@@ -27,6 +27,7 @@
 #include "G4WentzelVIModel.hh"
 #include "G4EmPenelopePhysics.hh"
 #include "G4EmDNAPhysics.hh"
+#include "G4RadioactiveDecayPhysics.hh"
 
 using namespace CLHEP;
 
@@ -49,6 +50,7 @@ PETPhysicsList::PETPhysicsList() : G4VModularPhysicsList()
   SetVerboseLevel(1);
 
   RegisterPhysics(new G4EmStandardPhysics_option4);
+  RegisterPhysics(new G4RadioactiveDecayPhysics);
   RegisterPhysics(new G4HadronPhysicsQGSP_BIC);
   RegisterPhysics(new G4EmExtraPhysics);
   RegisterPhysics(new G4HadronElasticPhysics);

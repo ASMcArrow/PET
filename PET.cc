@@ -1,4 +1,4 @@
-#undef G4MULTITHREADED
+//#undef G4MULTITHREADED
 #undef G4VIS_USE
 
 #include <cstdio>
@@ -71,7 +71,7 @@ int main(int argc,char** argv)
 
 #endif
 
-    runManager->BeamOn(1000);
+    runManager->BeamOn(10000);
 
     delete runManager;
     return 0;

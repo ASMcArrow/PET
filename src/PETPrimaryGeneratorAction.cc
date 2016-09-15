@@ -11,8 +11,8 @@ PETPrimaryGeneratorAction::PETPrimaryGeneratorAction()
 
     G4SPSEneDistribution* energy = CircleSource->GetEneDist();
     energy->SetEnergyDisType("Gauss");
-    energy->SetBeamSigmaInE(3 *MeV);
-    energy->SetMonoEnergy(160*MeV);
+    energy->SetBeamSigmaInE(0 *MeV);
+    energy->SetMonoEnergy(110*MeV);
 
     G4SPSPosDistribution* position = CircleSource->GetPosDist();
     position->SetPosDisType("Plane");

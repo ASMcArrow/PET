@@ -55,8 +55,9 @@ void PETParallelWorld::ConstructSD()
     G4CollectionNameVector* collections = new G4CollectionNameVector;
     collections->insert("EdepHitsCollection");
     collections->insert("C11HitsCollection");
-
-    /*"C10HitsCollection", "O15HitsCollection"*/
+    collections->insert("C10HitsCollection");
+    collections->insert("O15HitsCollection");
+    collections->insert("PositronHitsCollection");
 
     G4VSensitiveDetector* isoDetector = new PETDetectorSD("IsoDetector", collections);
     G4SDManager::GetSDMpointer()->AddNewDetector(isoDetector);
