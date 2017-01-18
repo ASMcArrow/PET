@@ -18,7 +18,7 @@ public:
 
     virtual void ComputeTransformation(const G4int copyNo, G4VPhysicalVolume *physVol ) const
     {
-        physVol->SetTranslation(G4ThreeVector(0.0 ,0.0, -30*cm + 30.0*cm/100.0 + copyNo*2*30.0*cm/100.0));
+        physVol->SetTranslation(G4ThreeVector(0.0 ,0.0, -30*cm + 30.0*cm/300.0 + copyNo*2*30.0*cm/300.0));
     }
 };
 
