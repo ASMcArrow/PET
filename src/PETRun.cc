@@ -84,8 +84,10 @@ void PETRun::RecordEvent(const G4Event* aEvent)
                     G4int numi = hit->GetReplicaNumI();
                     G4int numj = hit->GetReplicaNumJ();
                     G4int numk = hit->GetReplicaNumK();
+                    G4cout << "In RunAction i = " << i << " " << numi << " " << numj << " " << numk << G4endl;
 
                     (*HCollections)[i][numi][numj][numk] += 1;
+                    G4cout << (*HCollections)[i][numi][numj][numk] << G4endl;
                 }
             }
         }
@@ -106,7 +108,7 @@ void PETRun::Merge(const G4Run * aRun)
                 for (int k = 0; k < 60; k++)
                 {
                     (*HCollections)[num][i][j][k]+=(*localcollection)[num][i][j][k];
-                    if ((*localcollection)[num][i][j][k]!=0)
+                    if (((*localcollection)[num][i][j][k]!=0)&&(num==1))
                         G4cout << "Local collection is " << (*localcollection)[num][i][j][k] << " for " << i << " " <<  j << " " << k << G4endl;
                 }
             }

@@ -75,6 +75,7 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
             if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "C11")
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
+                G4cout << "InSD C11:" << i << " " << j << " " << k << G4endl;
                 detectorHit->SetReplicaNumI(i);
                 detectorHit->SetReplicaNumJ(j);
                 detectorHit->SetReplicaNumK(k);
@@ -119,7 +120,7 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
         detectorHit->SetReplicaNumJ(j);
         detectorHit->SetReplicaNumK(k);
         EdepHitsCollection->insert(detectorHit);
-        G4cout << "Energy deposit is " << energyDeposit << G4endl;
+        // G4cout << "Energy deposit is " << energyDeposit << G4endl;
 
         return true;
     }

@@ -67,6 +67,8 @@ void PETRunAction::EndOfRunAction(const G4Run* aRun)
             for (int k = 0; k < 60; k++)
             {
                 C11File << i << " " << j << " " << k << " " << (*collections)[1][i][j][k] << "\n";
+                if ((*collections)[1][i][j][k] != 0)
+                    G4cout << (*collections)[1][i][j][k] << G4endl;
             }
         }
     }
