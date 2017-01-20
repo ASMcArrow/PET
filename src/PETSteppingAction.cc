@@ -4,10 +4,9 @@
 #include "G4TrackStatus.hh"
 #include "G4CsvAnalysisManager.hh"
 #include "G4ThreeVector.hh"
+#include "G4VProcess.hh"
 
 void PETSteppingAction::UserSteppingAction(const G4Step* aStep)
-{
- //   G4cout << "Step" << G4endl;
-}
+{}
 
 

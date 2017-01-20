@@ -52,9 +52,9 @@ PETDetectorSD::Initialize(G4HCofThisEvent*)
                                                       collectionName[3]);
     O15HitsCollection->SetColID(3);
 
-    PositronHitsCollection = new PETDetectorHitsCollection(SensitiveDetectorName,
-                                                      collectionName[4]);
-    PositronHitsCollection->SetColID(3);
+//    PositronHitsCollection = new PETDetectorHitsCollection(SensitiveDetectorName,
+//                                                      collectionName[4]);
+//    PositronHitsCollection->SetColID(4);
 }
 
 G4bool
@@ -64,6 +64,9 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
     G4TouchableHistory* touchable = (G4TouchableHistory*)(preStep->GetTouchable());
 
     G4int i = touchable->GetReplicaNumber(0);
+    G4int j = touchable->GetReplicaNumber(1);
+    G4int k = touchable->GetReplicaNumber(2);
+
     G4double energyDeposit = aStep->GetTotalEnergyDeposit();
 
     if (aStep->GetTrack()->GetCreatorProcess() !=NULL)
@@ -72,42 +75,51 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
             if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "C11")
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
-                detectorHit->SetReplicaNum(i);
+                detectorHit->SetReplicaNumI(i);
+                detectorHit->SetReplicaNumJ(j);
+                detectorHit->SetReplicaNumK(k);
                 C11HitsCollection->insert(detectorHit);
             }
 
             if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "C10")
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
-                detectorHit->SetReplicaNum(i);
+                detectorHit->SetReplicaNumI(i);
+                detectorHit->SetReplicaNumJ(j);
+                detectorHit->SetReplicaNumK(k);
                 C10HitsCollection->insert(detectorHit);
             }
 
             if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "O15")
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
-                detectorHit->SetReplicaNum(i);
+                detectorHit->SetReplicaNumI(i);
+                detectorHit->SetReplicaNumJ(j);
+                detectorHit->SetReplicaNumK(k);
                 O15HitsCollection->insert(detectorHit);
             }
         }
 
-    if ((aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "e+")
-            &&(aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "annihil")
-            &&(aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay"))
-    {
+//    if ((aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "e+")
+//            &&(aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "annihil")
+//            &&(aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "RadioactiveDecay"))
+//    {
 
-        PETDetectorHit* detectorHit = new PETDetectorHit();
-        detectorHit->SetReplicaNum(i);
-        PositronHitsCollection->insert(detectorHit);
+//        PETDetectorHit* detectorHit = new PETDetectorHit();
+//        detectorHit->SetReplicaNum(i);
+//        PositronHitsCollection->insert(detectorHit);
 
-    }
+//    }
 
     if(energyDeposit != 0)
     {
         PETDetectorHit* detectorHit = new PETDetectorHit();
         detectorHit->SetEdep(energyDeposit);
-        detectorHit->SetReplicaNum(i);
+        detectorHit->SetReplicaNumI(i);
+        detectorHit->SetReplicaNumJ(j);
+        detectorHit->SetReplicaNumK(k);
         EdepHitsCollection->insert(detectorHit);
+        G4cout << "Energy deposit is " << energyDeposit << G4endl;
 
         return true;
     }
@@ -130,8 +142,8 @@ PETDetectorSD::EndOfEvent(G4HCofThisEvent* HCE)
     HCID = GetCollectionID(3);
     HCE->AddHitsCollection(HCID, O15HitsCollection);
 
-    HCID = GetCollectionID(4);
-    HCE->AddHitsCollection(HCID, PositronHitsCollection);
+//    HCID = GetCollectionID(4);
+//    HCE->AddHitsCollection(HCID, PositronHitsCollection);
 }
 
 #endif // PETDETECTORSD_CC

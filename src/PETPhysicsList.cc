@@ -74,10 +74,11 @@ void PETPhysicsList::AddParallelScoring()
             = new G4ParallelWorldScoringProcess("ParaWorldScoringProc");
     theParallelWorldScoringProcess->SetParallelWorld("PETParallelWorld");
 
-    theParticleIterator->reset();
-    while((*theParticleIterator)())
+    auto myParticleIterator = GetParticleIterator();
+    myParticleIterator->reset();
+    while((*myParticleIterator)())
     {
-        G4ProcessManager* pmanager = theParticleIterator->value()->GetProcessManager();
+        G4ProcessManager* pmanager = myParticleIterator->value()->GetProcessManager();
         pmanager->AddProcess(theParallelWorldScoringProcess);
         pmanager->SetProcessOrderingToLast(theParallelWorldScoringProcess, idxAtRest);
         pmanager->SetProcessOrdering(theParallelWorldScoringProcess, idxAlongStep, 1);

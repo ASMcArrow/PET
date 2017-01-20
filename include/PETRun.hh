@@ -18,7 +18,7 @@ public:
   virtual void RecordEvent(const G4Event*);
   virtual void Merge(const G4Run*);
 
-   std::vector<G4double*>* GetHCollections() { return HCollections; }
+   std::vector<G4double***>* GetHCollections() { return HCollections; }
 
 private:
   G4int CollNum;
@@ -27,7 +27,7 @@ private:
 
   G4bool Verbose;
 
-  std::vector<G4double*>* HCollections;
+  std::vector<G4double***>* HCollections;
 
 //  G4double* EDep;
 //  G4double* C11;

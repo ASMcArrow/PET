@@ -12,12 +12,12 @@ PETActionInitialization::~PETActionInitialization()
 
 void PETActionInitialization::BuildForMaster() const
 {
-    SetUserAction(new PETRunAction("IsoDetector"));
+    SetUserAction(new PETRunAction("Detector"));
 }
 
 void PETActionInitialization::Build() const
 {
     SetUserAction(new PETPrimaryGeneratorAction);
-    SetUserAction(new PETRunAction("IsoDetector"));
+    SetUserAction(new PETRunAction("Detector"));
     SetUserAction(new PETSteppingAction);
 }

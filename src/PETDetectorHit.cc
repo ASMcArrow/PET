@@ -8,7 +8,9 @@ G4ThreadLocal G4Allocator<PETDetectorHit>* PETDetectorHitAllocator = 0;
 
 PETDetectorHit::PETDetectorHit()
 {
-    ReplicaNum = 0;
+    ReplicaNumI = 0;
+    ReplicaNumJ = 0;
+    ReplicaNumK = 0;
     Position.set(0,0,0);
     EnergyDeposit = 0;
 }
@@ -20,7 +22,9 @@ PETDetectorHit::PETDetectorHit(const PETDetectorHit &right)
     :G4VHit()
 {
     Position = right.Position;
-    ReplicaNum = right.ReplicaNum;
+    ReplicaNumI = right.ReplicaNumI;
+    ReplicaNumJ = right.ReplicaNumJ;
+    ReplicaNumK = right.ReplicaNumK;
     EnergyDeposit = right.EnergyDeposit;
 }
 
@@ -28,7 +32,9 @@ const PETDetectorHit&
 PETDetectorHit::operator=(const PETDetectorHit &right)
 {
     Position = right.Position;
-    ReplicaNum = right.ReplicaNum;
+    ReplicaNumI = right.ReplicaNumI;
+    ReplicaNumJ = right.ReplicaNumJ;
+    ReplicaNumK = right.ReplicaNumK;
     EnergyDeposit = right.EnergyDeposit;
 
     return *this;
@@ -36,5 +42,7 @@ PETDetectorHit::operator=(const PETDetectorHit &right)
 
 int PETDetectorHit::operator==(const PETDetectorHit &right) const
 {
-    return((Position==right.Position)&&(ReplicaNum==right.ReplicaNum)&&(EnergyDeposit==right.EnergyDeposit));
+    return((Position==right.Position)&&(ReplicaNumI==right.ReplicaNumI)&&
+           (ReplicaNumJ==right.ReplicaNumJ)&&(ReplicaNumK==right.ReplicaNumK)&&
+           (EnergyDeposit==right.EnergyDeposit));
 }

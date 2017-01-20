@@ -17,7 +17,7 @@ public:
     void ConstructSD();
 
 private:
-    G4LogicalVolume *GhostZBoxLog;
+    G4LogicalVolume *GhostVoxelLog;
 };
 
 #endif // PETPARALLELWORLD_HH

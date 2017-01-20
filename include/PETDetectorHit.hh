@@ -26,8 +26,14 @@ public:
     void SetPos(G4ThreeVector xyz)
     { Position = xyz; }
 
-    void SetReplicaNum(G4int i)
-    { ReplicaNum = i; }
+    void SetReplicaNumI(G4int i)
+    { ReplicaNumI = i; }
+
+    void SetReplicaNumJ(G4int j)
+    { ReplicaNumJ = j; }
+
+    void SetReplicaNumK(G4int k)
+    { ReplicaNumK = k; }
 
     void SetEdep(G4double de)
     { EnergyDeposit = de; }
@@ -35,15 +41,23 @@ public:
     G4ThreeVector GetPos() const
     { return Position; }
 
-    G4int GetReplicaNum()
-    { return ReplicaNum; }
+    G4int GetReplicaNumI()
+    { return ReplicaNumI; }
+
+    G4int GetReplicaNumJ()
+    { return ReplicaNumJ; }
+
+    G4int GetReplicaNumK()
+    { return ReplicaNumK; }
 
     G4double GetEdep() const
     { return EnergyDeposit; }
 
 private:
     G4ThreeVector Position; // Position
-    G4int ReplicaNum; // Number of replica
+    G4int ReplicaNumI; // Number of replica I
+    G4int ReplicaNumJ; // Number of replica J
+    G4int ReplicaNumK; // Number of replica K
     G4double EnergyDeposit; // Energy deposit in volume
 };
 
