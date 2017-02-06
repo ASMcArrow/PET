@@ -2,6 +2,7 @@
 #include "PETActionInitialization.hh"
 #include "PETRunAction.hh"
 #include "PETSteppingAction.hh"
+#include "PETEventAction.hh"
 
 PETActionInitialization::PETActionInitialization(PETDetectorConstruction *geometry)
     : G4VUserActionInitialization()
@@ -20,4 +21,5 @@ void PETActionInitialization::Build() const
     SetUserAction(new PETPrimaryGeneratorAction);
     SetUserAction(new PETRunAction("Detector"));
     SetUserAction(new PETSteppingAction);
+    SetUserAction(new PETEventAction);
 }

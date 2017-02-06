@@ -31,24 +31,24 @@ void PETParallelWorld::Construct()
 
     // Place volumes in the parallel world
 
-    G4Box* ghostDetector = new G4Box("GhostDetectorBox", 15.0*cm, 15.0*cm, 30.0*cm);
+    G4Box* ghostDetector = new G4Box("GhostDetectorBox", 15.0*cm, 15.0*cm, 5.0*cm);
     G4LogicalVolume* ghostDetectorLog = new G4LogicalVolume(ghostDetector, 0, "GhostDetectorLog");
-    new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 30.0*cm), ghostDetectorLog, "GhostDetectorPhys", worldLog, 0, 0);
+    new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 5.0*cm), ghostDetectorLog, "GhostDetectorPhys", worldLog, 0, 0);
     ghostDetectorLog->SetVisAttributes(visAttributes);
 
     // Divide along Z coordinate
 
-    G4Box* ghostLayer = new G4Box("GhostDetectorBox", 15.0*cm, 15.0*cm, 0.5*cm);
-    G4LogicalVolume* ghostLayerLog = new G4LogicalVolume(ghostLayer, 0, "GhostLayerLog");
-    new G4PVReplica("GhostLayerReplica", ghostLayerLog, ghostDetectorLog, kZAxis, 60, 1*cm);
+    G4Box* ghostLayer = new G4Box("GhostDetectorBox", 15.0*cm, 15.0*cm, 0.05*cm);
+    GhostLayerLog = new G4LogicalVolume(ghostLayer, 0, "GhostLayerLog");
+    new G4PVReplica("GhostLayerReplica", GhostLayerLog, ghostDetectorLog, kZAxis, 100, 0.1*cm);
 
-    G4Box* ghostRow = new G4Box("ghostRow", 15.0*cm, 0.5*cm, 0.5*cm);
-    G4LogicalVolume* ghostRowLog = new G4LogicalVolume(ghostRow, 0, "GhostRowLog");
-    new G4PVReplica("GhostRowPhys", ghostRowLog, ghostLayerLog, kYAxis, 30, 1*cm, 0);
+//    G4Box* ghostRow = new G4Box("ghostRow", 15.0*cm, 0.5*cm, 0.5*cm);
+//    G4LogicalVolume* ghostRowLog = new G4LogicalVolume(ghostRow, 0, "GhostRowLog");
+//    new G4PVReplica("GhostRowPhys", ghostRowLog, ghostLayerLog, kYAxis, 30, 1*cm, 0);
 
-    G4Box* ghostVoxel = new G4Box("ghostVoxel", 0.5*cm, 0.5*cm, 0.5*cm);
-    GhostVoxelLog = new G4LogicalVolume(ghostVoxel, 0, "GhostVoxelLog");
-    new G4PVReplica("GhostVoxelPhys", GhostVoxelLog, ghostRowLog, kXAxis, 30, 1*cm, 0);
+//    G4Box* ghostVoxel = new G4Box("ghostVoxel", 0.5*cm, 0.5*cm, 0.5*cm);
+//    GhostVoxelLog = new G4LogicalVolume(ghostVoxel, 0, "GhostVoxelLog");
+//    new G4PVReplica("GhostVoxelPhys", GhostVoxelLog, ghostRowLog, kXAxis, 30, 1*cm, 0);
 }
 
 void PETParallelWorld::ConstructSD()
@@ -64,5 +64,5 @@ void PETParallelWorld::ConstructSD()
 
     G4VSensitiveDetector* isoDetector = new PETDetectorSD("Detector", collections);
     G4SDManager::GetSDMpointer()->AddNewDetector(isoDetector);
-    SetSensitiveDetector(GhostVoxelLog, isoDetector);
+    SetSensitiveDetector(GhostLayerLog, isoDetector);
 }

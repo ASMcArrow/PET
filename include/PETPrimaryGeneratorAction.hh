@@ -3,6 +3,7 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4SingleParticleSource.hh"
+#include "PETPrimaryGeneratorActionMessenger.hh"
 
 class G4Event;
 
@@ -15,8 +16,12 @@ public:
 
     void GeneratePrimaries(G4Event* event);
 
+    void SetEnergy(G4double energy);
+
 private:
     G4SingleParticleSource* CircleSource;
+    G4SPSEneDistribution* Energy;
+    PETPrimaryGeneratorActionMessenger* Messenger;
 };
 
 #endif

@@ -7,7 +7,7 @@ PETRun::PETRun(const G4String detectorName, G4bool verbose) : G4Run()
 {
     CollNames = new std::vector<G4String>;
     CollIDs = new std::vector<G4int>;
-    HCollections = new std::vector<G4double***>;
+    HCollections = new std::vector<G4double*>;
 
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
     G4VSensitiveDetector* detector = SDman->FindSensitiveDetector(detectorName);
@@ -17,27 +17,12 @@ PETRun::PETRun(const G4String detectorName, G4bool verbose) : G4Run()
     {
         G4String collName =  detector->GetCollectionName(i);
         CollNames->push_back(collName);
-        G4int collID = SDman->GetCollectionID(collName);
         CollIDs->push_back(SDman->GetCollectionID(collName));
 
-        G4double*** collection = new double**[30];
-        for (int i = 0; i < 30; ++i)
+        G4double* collection = new double[100];
+        for (int j = 0; j < 100; ++j)
         {
-            collection[i] = new double*[30];
-
-            for (int j = 0; j < 30; ++j)
-                collection[i][j] = new double[60];
-        }
-
-        for (int i = 0; i < 30; i++)
-        {
-            for (int j = 0; j < 30; j++)
-            {
-                for (int k = 0; k < 60; k++)
-                {
-                    collection[i][j][k] = 0;
-                }
-            }
+            collection[j] = 0;
         }
 
         HCollections->push_back(collection);
@@ -46,7 +31,17 @@ PETRun::PETRun(const G4String detectorName, G4bool verbose) : G4Run()
     Verbose = verbose;
 }
 
-PETRun::~PETRun() {}
+PETRun::~PETRun()
+{
+    for (G4int i = 0; i < CollNum; i++)
+    {
+        delete (*HCollections)[i];
+    }
+
+    delete HCollections;
+    delete CollNames;
+    delete CollIDs;
+}
 
 void PETRun::RecordEvent(const G4Event* aEvent)
 {
@@ -65,11 +60,11 @@ void PETRun::RecordEvent(const G4Event* aEvent)
                 {
                     G4cout << "HitsVector Initial: " << "i = "<< i << " Energy deposition is " << hit->GetEdep()
                            << " Position is " << hit->GetReplicaNumK() << G4endl;
+
                 }
                 G4int numi = hit->GetReplicaNumI();
-                G4int numj = hit->GetReplicaNumJ();
-                G4int numk = hit->GetReplicaNumK();
-                (*HCollections)[0][numi][numj][numk] += hit->GetEdep();
+                G4double edep = hit->GetEdep();
+                ((*HCollections)[0])[numi] += edep;
             }
         }
 
@@ -82,12 +77,7 @@ void PETRun::RecordEvent(const G4Event* aEvent)
                 {
                     PETDetectorHit *hit = (PETDetectorHit*)(HC->GetHit(j));
                     G4int numi = hit->GetReplicaNumI();
-                    G4int numj = hit->GetReplicaNumJ();
-                    G4int numk = hit->GetReplicaNumK();
-                    G4cout << "In RunAction i = " << i << " " << numi << " " << numj << " " << numk << G4endl;
-
-                    (*HCollections)[i][numi][numj][numk] += 1;
-                    G4cout << (*HCollections)[i][numi][numj][numk] << G4endl;
+                    (*HCollections)[i][numi] += 1;
                 }
             }
         }
@@ -97,21 +87,13 @@ void PETRun::RecordEvent(const G4Event* aEvent)
 void PETRun::Merge(const G4Run * aRun)
 {
     const PETRun *localRun = static_cast<const PETRun*>(aRun);
-    std::vector<G4double***>* localcollection = localRun->HCollections;
+    std::vector<G4double*>* localcollection = localRun->HCollections;
 
     for (int num = 0; num < CollNum; num++)
     {
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 100; i++)
         {
-            for (int j = 0; j < 30; j++)
-            {
-                for (int k = 0; k < 60; k++)
-                {
-                    (*HCollections)[num][i][j][k]+=(*localcollection)[num][i][j][k];
-                    if (((*localcollection)[num][i][j][k]!=0)&&(num==1))
-                        G4cout << "Local collection is " << (*localcollection)[num][i][j][k] << " for " << i << " " <<  j << " " << k << G4endl;
-                }
-            }
+            (*HCollections)[num][i] += (*localcollection)[num][i];
         }
     }
 

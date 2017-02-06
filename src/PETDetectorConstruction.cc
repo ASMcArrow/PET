@@ -50,9 +50,9 @@ G4VPhysicalVolume* PETDetectorConstruction::Construct()
     worldLogic->SetVisAttributes(visAttributes);
 
     // Phantom
-    G4Box* phantom = new G4Box("Phantom", 15*cm, 15*cm, 30*cm);
+    G4Box* phantom = new G4Box("Phantom", 15*cm, 15*cm, 5*cm);
     G4LogicalVolume *phantomLogic = new G4LogicalVolume(phantom, Bone, "PhantomLogic");
-    G4VPhysicalVolume *phantomPhys = new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 30*cm), phantomLogic, "PhantomPhys", worldLogic, false, 0);
+    G4VPhysicalVolume *phantomPhys = new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 5*cm), phantomLogic, "PhantomPhys", worldLogic, false, 0);
 
     return worldPhys;
 }

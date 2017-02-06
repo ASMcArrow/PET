@@ -25,6 +25,13 @@
 PETRunAction::PETRunAction(const G4String detectorName) : G4UserRunAction()
 {
     DetectorName = detectorName;
+
+    CurrentName.push_back("115MeV");
+    CurrentName.push_back("120MeV");
+    CurrentName.push_back("125MeV");
+    CurrentName.push_back("130MeV");
+
+    times = 0;
 }
 
 PETRunAction::~PETRunAction()
@@ -43,72 +50,35 @@ void PETRunAction::EndOfRunAction(const G4Run* aRun)
     if(!IsMaster()) return;
 
     PETRun* run = (PETRun*)aRun;
-    std::vector<G4double***>* collections = run->GetHCollections();
+    std::vector<G4double*>* collections = run->GetHCollections();
 
-    std::ofstream eDepFile("PET_EnergyDistribution.txt");
+    std::ofstream eDepFile(G4String("PET_EnergyDistribution_")+CurrentName[times]+G4String(".txt"));
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 100; i++)
     {
-        for (int j = 0; j < 30; j++)
-        {
-            for (int k = 0; k < 60; k++)
-            {
-                eDepFile << i << " " << j << " " << k << " " << (*collections)[0][i][j][k] << "\n";
-            }
-        }
+        eDepFile << i << " " << (*collections)[0][i]/MeV << "\n";
     }
 
-    std::ofstream C11File("PET_C11Distribution.txt");
+    std::ofstream C11File(G4String("PET_C11Distribution_")+CurrentName[times]+G4String(".txt"));
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 100; i++)
     {
-        for (int j = 0; j < 30; j++)
-        {
-            for (int k = 0; k < 60; k++)
-            {
-                C11File << i << " " << j << " " << k << " " << (*collections)[1][i][j][k] << "\n";
-                if ((*collections)[1][i][j][k] != 0)
-                    G4cout << (*collections)[1][i][j][k] << G4endl;
-            }
-        }
+        C11File << i << " " << (*collections)[1][i] << "\n";
     }
 
-    std::ofstream C10File("PET_C10Distribution.txt");
+    std::ofstream C10File(G4String("PET_C10Distribution_")+CurrentName[times]+G4String(".txt"));
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 100; i++)
     {
-        for (int j = 0; j < 30; j++)
-        {
-            for (int k = 0; k < 60; k++)
-            {
-                C10File << i << " " << j << " " << k << " " << (*collections)[2][i][j][k] << "\n";
-            }
-        }
+        C10File << i << " " << (*collections)[2][i] << "\n";
     }
 
-    std::ofstream O15File("PET_O15Distribution.txt");
+    std::ofstream O15File(G4String("PET_O15Distribution_")+CurrentName[times]+G4String(".txt"));
 
-    for (int i = 0; i < 30; i++)
+    for (int i = 0; i < 100; i++)
     {
-        for (int j = 0; j < 30; j++)
-        {
-            for (int k = 0; k < 60; k++)
-            {
-                O15File << i << " " << j << " " << k << " " << (*collections)[3][i][j][k] << "\n";
-            }
-        }
+        O15File << i << " " << (*collections)[3][i] << "\n";
     }
 
-//    std::ofstream PosFile("PET_PositronDistribution.txt");
-
-//    for (int i = 0; i < 30; i++)
-//    {
-//        for (int j = 0; j < 30; j++)
-//        {
-//            for (int k = 0; k < 60; k++)
-//            {
-//                PosFile << j << " " << (*collections)[4][i][j][k] << "\n";
-//            }
-//        }
-//    }
+    times++;
 }

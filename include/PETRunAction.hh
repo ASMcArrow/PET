@@ -20,6 +20,8 @@ private:
     G4String DetectorName;
     G4double* EDep;
     G4double* C11;
+    std::vector<G4String> CurrentName;
+    G4int times;
 };
 
 #endif // PETDETECTORSD_HH

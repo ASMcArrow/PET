@@ -27,6 +27,9 @@
 #include "G4GeometryTolerance.hh"
 #include "G4GeometryManager.hh"
 #include "G4CsvAnalysisManager.hh"
+#include "G4PathFinder.hh"
+#include "G4Navigator.hh"
+#include "G4PenelopeIonisationModel.hh"
 
 #include <math.h>
 
@@ -44,7 +47,8 @@ int main(int argc,char** argv)
     G4RunManager* runManager = new G4RunManager;
 #endif
 
-    G4GeometryManager::GetInstance()->SetWorldMaximumExtent(30*cm);
+    G4GeometryManager::GetInstance()->SetWorldMaximumExtent(3*m);
+    G4PathFinder::GetInstance()->SetVerboseLevel(0);
 
     PETDetectorConstruction* massWorld = new PETDetectorConstruction;
     massWorld->RegisterParallelWorld(new PETParallelWorld("PETParallelWorld"));
@@ -69,9 +73,16 @@ int main(int argc,char** argv)
     delete ui;
     delete visManager;
 
+#else
+    UImanager->ApplyCommand("/Source/setEnergy 115 MeV");
+    runManager->BeamOn(10000000);
+    UImanager->ApplyCommand("/Source/setEnergy 120 MeV");
+    runManager->BeamOn(10000000);
+    UImanager->ApplyCommand("/Source/setEnergy 125 MeV");
+    runManager->BeamOn(10000000);
+    UImanager->ApplyCommand("/Source/setEnergy 130 MeV");
+    runManager->BeamOn(10000000);
 #endif
-
-    runManager->BeamOn(10000);
 
     delete runManager;
     return 0;

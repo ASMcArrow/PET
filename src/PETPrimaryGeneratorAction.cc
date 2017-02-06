@@ -6,13 +6,15 @@ using namespace CLHEP;
 
 PETPrimaryGeneratorAction::PETPrimaryGeneratorAction()
 {
+    Messenger = new PETPrimaryGeneratorActionMessenger(this);
+
     CircleSource = new G4SingleParticleSource;
     CircleSource->SetParticleDefinition(G4Proton::Definition());
 
-    G4SPSEneDistribution* energy = CircleSource->GetEneDist();
-    energy->SetEnergyDisType("Gauss");
-    energy->SetBeamSigmaInE(0 *MeV);
-    energy->SetMonoEnergy(110*MeV);
+    Energy = CircleSource->GetEneDist();
+    Energy->SetEnergyDisType("Gauss");
+    Energy->SetBeamSigmaInE(0 *MeV);
+    Energy->SetMonoEnergy(115*MeV);
 
     G4SPSPosDistribution* position = CircleSource->GetPosDist();
     position->SetPosDisType("Plane");
@@ -24,6 +26,12 @@ PETPrimaryGeneratorAction::PETPrimaryGeneratorAction()
     angular->SetParticleMomentumDirection(G4ThreeVector(0.0,0.0,1.0));
     angular->DefineAngRefAxes("angref1", G4ThreeVector(-1.0,0.0,0.0));
     CircleSource->SetNumberOfParticles(1);
+}
+
+void PETPrimaryGeneratorAction::SetEnergy(G4double energy)
+{
+    Energy->SetMonoEnergy(energy/MeV);
+    G4cout << "ENERGY " << energy/MeV << G4endl;
 }
 
 PETPrimaryGeneratorAction::~PETPrimaryGeneratorAction()

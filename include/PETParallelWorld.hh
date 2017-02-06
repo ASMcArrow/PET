@@ -18,6 +18,7 @@ public:
 
 private:
     G4LogicalVolume *GhostVoxelLog;
+    G4LogicalVolume* GhostLayerLog;
 };
 
 #endif // PETPARALLELWORLD_HH

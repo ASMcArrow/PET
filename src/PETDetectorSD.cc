@@ -10,6 +10,8 @@
 #include "G4TouchableHistory.hh"
 #include "G4SDManager.hh"
 #include "G4TrackVector.hh"
+#include "G4UnitsTable.hh"
+#include "G4SystemOfUnits.hh"
 
 #include <cstdio>
 
@@ -28,6 +30,10 @@ PETDetectorSD::PETDetectorSD(G4String name, std::vector<G4String> *collnames):
     PositronHitsCollection = NULL;
 
     SensitiveDetectorName = name;
+
+    PromptFile.open("PromptFile.txt", std::ios::app);
+    PromptFile << "Energy (Mev)   x  y  z  Angle (deg)" << G4endl;
+    PromptFile.close();
 }
 
 PETDetectorSD::~PETDetectorSD()
@@ -64,21 +70,21 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
     G4TouchableHistory* touchable = (G4TouchableHistory*)(preStep->GetTouchable());
 
     G4int i = touchable->GetReplicaNumber(0);
-    G4int j = touchable->GetReplicaNumber(1);
-    G4int k = touchable->GetReplicaNumber(2);
+//    G4int j = touchable->GetReplicaNumber(1);
+//    G4int k = touchable->GetReplicaNumber(2);
 
     G4double energyDeposit = aStep->GetTotalEnergyDeposit();
 
     if (aStep->GetTrack()->GetCreatorProcess() !=NULL)
-        if (aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "protonInelastic")
+        if ((aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "protonInelastic")&&(aStep->GetTrack()->GetCurrentStepNumber() == 1))
         {
             if (aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "C11")
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
-                G4cout << "InSD C11:" << i << " " << j << " " << k << G4endl;
                 detectorHit->SetReplicaNumI(i);
-                detectorHit->SetReplicaNumJ(j);
-                detectorHit->SetReplicaNumK(k);
+//                detectorHit->SetReplicaNumJ(j);
+//                detectorHit->SetReplicaNumK(k);
+                // G4cout << i << " " << j << " " << k << G4endl;
                 C11HitsCollection->insert(detectorHit);
             }
 
@@ -86,8 +92,8 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
                 detectorHit->SetReplicaNumI(i);
-                detectorHit->SetReplicaNumJ(j);
-                detectorHit->SetReplicaNumK(k);
+//                detectorHit->SetReplicaNumJ(j);
+//                detectorHit->SetReplicaNumK(k);
                 C10HitsCollection->insert(detectorHit);
             }
 
@@ -95,11 +101,21 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
             {
                 PETDetectorHit* detectorHit = new PETDetectorHit();
                 detectorHit->SetReplicaNumI(i);
-                detectorHit->SetReplicaNumJ(j);
-                detectorHit->SetReplicaNumK(k);
+//                detectorHit->SetReplicaNumJ(j);
+//                detectorHit->SetReplicaNumK(k);
                 O15HitsCollection->insert(detectorHit);
             }
         }
+
+//     if ((aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "gamma")&&(aStep->GetTrack()->GetCurrentStepNumber() == 1)&&
+//             (aStep->GetTrack()->GetCreatorProcess()->GetProcessName() == "protonInelastic"))
+//     {
+//         PromptFile.open("PromptFile.txt", std::ios::app);
+//         PromptFile << aStep->GetTrack()->GetTotalEnergy()/MeV << " " << i << " " << j << " " << k << " " << aStep->GetPreStepPoint()->GetMomentumDirection().getTheta()/deg << G4endl;
+//         aStep->GetTrack()->SetTrackStatus(fStopAndKill);
+//         PromptFile.close();
+//     }
+
 
 //    if ((aStep->GetTrack()->GetParticleDefinition()->GetParticleName() == "e+")
 //            &&(aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName() == "annihil")
@@ -117,8 +133,8 @@ PETDetectorSD::ProcessHits(G4Step* aStep, G4TouchableHistory* obsolete)
         PETDetectorHit* detectorHit = new PETDetectorHit();
         detectorHit->SetEdep(energyDeposit);
         detectorHit->SetReplicaNumI(i);
-        detectorHit->SetReplicaNumJ(j);
-        detectorHit->SetReplicaNumK(k);
+//        detectorHit->SetReplicaNumJ(j);
+//        detectorHit->SetReplicaNumK(k);
         EdepHitsCollection->insert(detectorHit);
         // G4cout << "Energy deposit is " << energyDeposit << G4endl;
 

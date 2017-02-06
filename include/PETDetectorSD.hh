@@ -21,6 +21,8 @@ public:
   void EndOfEvent(G4HCofThisEvent* HCE);
 
 private:
+  std::ofstream PromptFile;
+
   PETDetectorHitsCollection* EdepHitsCollection;
   PETDetectorHitsCollection* C11HitsCollection;
   PETDetectorHitsCollection* C10HitsCollection;
